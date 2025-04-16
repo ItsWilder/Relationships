@@ -50,7 +50,7 @@ struct ContactDetailView: View {
                         Image(systemName: "phone.fill")
                         Text("Call")
                     }
-                    .foregroundColor(.green)
+                    .foregroundColor(.blue)
                 }
                 
                 Button(action: {
@@ -60,7 +60,7 @@ struct ContactDetailView: View {
                 }){
                     HStack {
                         Image(systemName: "envelope.fill")
-                        Text("Send Email")
+                        Text("Email")
                     }
                     .foregroundColor(.blue)
                 }

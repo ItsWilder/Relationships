@@ -27,7 +27,7 @@ class ContactEditViewModel: ObservableObject {
     }
     
     private var isValidPhone: Bool {
-        let phoneRegex = "^[0-9+\\-\\s()]*S"
+        let phoneRegex = #"^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$"#
         return phoneNumber.range(of: phoneRegex, options: .regularExpression) != nil
     }
     
