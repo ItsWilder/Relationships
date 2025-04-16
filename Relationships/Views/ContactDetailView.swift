@@ -65,6 +65,17 @@ struct ContactDetailView: View {
                     .foregroundColor(.blue)
                 }
             }
+            
+            Section("Notes") {
+                if contact.notes.isEmpty {
+                    Text("Add notes here")
+                        .foregroundColor(.secondary)
+                } else {
+                    Text(contact.notes)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -100,7 +111,8 @@ struct ContactDetailView: View {
             name: "Jane Doe",
             phoneNumber: "123-456-7890",
             email: "jane@example.com",
-            avatar: "person.crop.circle"
+            avatar: "person.crop.circle",
+            notes: ""
         ),
         onDelete: { _ in }
     )

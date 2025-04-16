@@ -58,6 +58,12 @@ struct ContactEditView: View {
                         .keyboardType(.emailAddress)
                         .textInputAutocapitalization(.never)
                 }
+                
+                Section("Notes") {
+                    TextEditor(text: $viewModel.notes)
+                        .frame(minHeight: 100)
+                        .foregroundColor(.primary)
+                }
             }
             .navigationTitle(mode.isNew ? "New Contact" : "Edit Contact")
             .navigationBarTitleDisplayMode(.inline)
@@ -98,7 +104,8 @@ private extension ContactEditMode {
             id: UUID(),
             name: "Jane",
             phoneNumber: "123-456-7890",
-            email: "jane@example.com"
+            email: "jane@example.com",
+            notes: "Notes will go here and can wrap if you have multiple lines of text you want to add."
         )),
         onSave: { _ in }
     )
