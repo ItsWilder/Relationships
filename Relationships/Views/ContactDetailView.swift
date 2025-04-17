@@ -25,7 +25,7 @@ struct ContactDetailView: View {
                     Image(contact.avatar)
                         .resizable()
                         .scaledToFill()
-                        .frame(height: 400, alignment: .top)
+                        .frame(height: 500, alignment: .top)
                         .frame(maxWidth: .infinity)
                         .clipped()
                     
@@ -34,7 +34,7 @@ struct ContactDetailView: View {
                         startPoint: .bottom,
                         endPoint: .top
                     )
-                    .frame(height: 400)
+                    .frame(height: 500)
                     .frame(maxWidth: .infinity)
                     .clipped()
                     .ignoresSafeArea(edges: .top)
@@ -53,10 +53,13 @@ struct ContactDetailView: View {
                                 .frame(width: 80, height: 80)
                                 .foregroundColor(.blue)
                         }
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 100)
+                        .padding(.bottom, 8)
                     }
                     
                     Text(contact.name.split(separator: " ").first.map(String.init) ?? contact.name)
-                        .font(.title)
+                        .font(.largeTitle)
                         .fontWeight(.semibold)
                         .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .primary)
                     
