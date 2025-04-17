@@ -40,6 +40,21 @@ struct ContactDetailView: View {
                     .ignoresSafeArea(edges: .top)
                 }
                 
+                if UIImage(named: contact.avatar) != nil {
+                    ZStack {
+                        VisualEffectBlur(blurStyle: .systemUltraThinMaterialDark)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 200)
+                            .mask(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.black.opacity(0.6), Color.clear]),
+                                    startPoint: .bottom,
+                                    endPoint: .top
+                                )
+                            )
+                    }
+                }
+                
                 VStack(spacing: 18) {
                     if UIImage(named: contact.avatar) == nil {
                         ZStack {
@@ -55,13 +70,14 @@ struct ContactDetailView: View {
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.top, 100)
-                        .padding(.bottom, 8)
+                        .padding(.bottom)
                     }
                     
                     Text(contact.name.split(separator: " ").first.map(String.init) ?? contact.name)
                         .font(.largeTitle)
                         .fontWeight(.semibold)
                         .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .primary)
+                        .padding(.bottom, 0)
                     
                     HStack(spacing: 12) {
                         Button(action: {
@@ -132,29 +148,33 @@ struct ContactDetailView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                     }
+                    .padding(.bottom, 0)
+                    
+                    VStack(alignment: .leading, spacing: 8) {
+                        let isPhoto = UIImage(named: contact.avatar) != nil
+                        let textColor: Color = isPhoto ? .white : .primary
+
+                        Text("ABOUT")
+                            .font(.callout)
+                            .fontWeight(.bold)
+                            .foregroundColor(textColor)
+
+                        if contact.about.isEmpty {
+                            Text("Tell me about \(contact.name.split(separator: " ").first ?? "")")
+                                .foregroundColor(textColor)
+                        } else {
+                            Text(contact.about)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .foregroundColor(textColor)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .padding(.horizontal)
                 .padding(.bottom)
             }
             
             VStack(alignment: .leading, spacing: 32) {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("ABOUT")
-                        .font(.callout)
-                        .foregroundColor(.secondary)
-                    
-                    if contact.about.isEmpty {
-                        Text("Tell me about \(contact.name.split(separator: " ").first ?? "")")
-                            .foregroundColor(Color(UIColor.placeholderText))
-                            .font(.body)
-                    } else {
-                        Text(contact.about)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
-                
-                Divider()
-                
                 VStack(alignment: .leading, spacing: 14) {
                     Text("CONTACT INFO")
                         .font(.callout)
@@ -229,6 +249,14 @@ struct ContactDetailView: View {
     }
 }
 
+struct VisualEffectBlur: UIViewRepresentable {
+    var blurStyle: UIBlurEffect.Style
+    func makeUIView(context: Context) -> UIVisualEffectView {
+        return UIVisualEffectView(effect: UIBlurEffect(style: blurStyle))
+    }
+    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {}
+}
+
 #Preview {
     ContactDetailView(
         contact: Contact(
@@ -238,7 +266,7 @@ struct ContactDetailView: View {
             email: "hogiebear@example.com",
             avatar: "sample_photo",
             notes: "",
-            about: ""
+            about: "Hogan is an amazing person who always knows just how to get it right and has always been there for me."
         ),
         onDelete: { _ in },
         onSave: { _ in }
