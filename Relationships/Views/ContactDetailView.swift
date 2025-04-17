@@ -35,9 +35,64 @@ struct ContactDetailView: View {
                 .listRowBackground(Color.clear)
             }
             
+            HStack(spacing: 12) {
+                Button(action: {
+                    if let url = URL(string: "tel:\(contact.phoneNumber)") {
+                        UIApplication.shared.open(url)
+                    }
+                }) {
+                    VStack (spacing:8){
+                        Image(systemName: "phone.fill")
+                        Text("Call")
+                            .font(.footnote)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue.opacity(0.1))
+                    .foregroundColor(.blue)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+                
+                Button(action: {
+                    if let url = URL(string: "mailto:\(contact.email)") {
+                        UIApplication.shared.open(url)
+                    }
+                }) {
+                    VStack (spacing:8){
+                        Image(systemName: "envelope.fill")
+                        Text("Email")
+                            .font(.footnote)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue.opacity(0.1))
+                    .foregroundColor(.blue)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+                
+                Button(action: {
+                    if let url = URL(string: "sms:\(contact.phoneNumber)") {
+                        UIApplication.shared.open(url)
+                    }
+                }) {
+                    VStack (spacing:8){
+                        Image(systemName: "message.fill")
+                        Text("Message")
+                            .font(.footnote)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue.opacity(0.1))
+                    .foregroundColor(.blue)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+            }
+            .listRowBackground(Color.clear)
+            .padding(.horizontal)
+            
             Section("About") {
                 if contact.about.isEmpty {
-                   Text("Tell me about \(contact.name.split(separator: " ").first ?? "")")
+                    Text("Tell me about \(contact.name.split(separator: " ").first ?? "")")
                         .foregroundColor(Color(UIColor.placeholderText))
                 } else {
                     Text(contact.about)
@@ -54,7 +109,7 @@ struct ContactDetailView: View {
                     Text("Name")
                         .foregroundColor(.secondary)
                 }
-
+                
                 LabeledContent {
                     Text(contact.phoneNumber)
                         .foregroundColor(.primary)
@@ -62,51 +117,13 @@ struct ContactDetailView: View {
                     Text("Phone")
                         .foregroundColor(.secondary)
                 }
-
+                
                 LabeledContent {
                     Text(contact.email)
                         .foregroundColor(.primary)
                 } label: {
                     Text("Email")
                         .foregroundColor(.secondary)
-                }
-            }
-            
-            Section {
-                Button(action: {
-                    if let url = URL(string: "tel:\(contact.phoneNumber)") {
-                        UIApplication.shared.open(url)
-                    }
-                }){
-                    HStack {
-                        Image(systemName: "phone.fill")
-                        Text("Call")
-                    }
-                    .foregroundColor(.blue)
-                }
-                
-                Button(action: {
-                    if let url = URL(string: "mailto:\(contact.email)") {
-                        UIApplication.shared.open(url)
-                    }
-                }){
-                    HStack {
-                        Image(systemName: "envelope.fill")
-                        Text("Email")
-                    }
-                    .foregroundColor(.blue)
-                }
-                
-                Button(action: {
-                    if let url = URL(string: "sms:\(contact.phoneNumber)") {
-                        UIApplication.shared.open(url)
-                    }
-                }) {
-                    HStack {
-                        Image(systemName: "message.fill")
-                        Text("Message")
-                    }
-                    .foregroundColor(.blue)
                 }
             }
             
