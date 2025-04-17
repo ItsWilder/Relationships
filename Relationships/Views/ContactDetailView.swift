@@ -96,6 +96,18 @@ struct ContactDetailView: View {
                     }
                     .foregroundColor(.blue)
                 }
+                
+                Button(action: {
+                    if let url = URL(string: "sms:\(contact.phoneNumber)") {
+                        UIApplication.shared.open(url)
+                    }
+                }) {
+                    HStack {
+                        Image(systemName: "message.fill")
+                        Text("Message")
+                    }
+                    .foregroundColor(.blue)
+                }
             }
             
             Section("Notes") {
