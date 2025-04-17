@@ -11,6 +11,7 @@ struct ContactDetailView: View {
     
     let contact: Contact
     let onDelete: (Contact) -> Void
+    let onSave: (Contact) -> Void
     
     @Environment(\.dismiss) private var dismiss
     @State private var showingEditSheet = false
@@ -98,7 +99,7 @@ struct ContactDetailView: View {
         .sheet(isPresented: $showingEditSheet) {
             ContactEditView(
                 mode: .edit(contact),
-                onSave: viewModel.updateContact
+                onSave: onSave
             )
         }
     }
@@ -114,6 +115,7 @@ struct ContactDetailView: View {
             avatar: "person.crop.circle",
             notes: ""
         ),
-        onDelete: { _ in }
+        onDelete: { _ in },
+        onSave: { _ in }
     )
 }

@@ -18,9 +18,9 @@ struct ContentView: View {
                 if viewModel.contacts.isEmpty {
                     EmptyContactsView()
                 } else {
-                    ContactListView(contacts: viewModel.filteredContacts,
-                                    onDelete: viewModel.deleteContact
-                    )
+                    ContactListView(contacts: viewModel.contacts,
+                                    onDelete: viewModel.deleteContact,
+                                    onSave: viewModel.updateContact)
                 }
             }
             .navigationTitle(Text("Contacts"))

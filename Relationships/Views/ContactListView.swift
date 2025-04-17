@@ -11,10 +11,11 @@ struct ContactListView: View {
     
     let contacts: [Contact]
     let onDelete: (Contact) -> Void
+    let onSave: (Contact) -> Void
     
     var body: some View {
         List(contacts) { contact in
-            NavigationLink(destination: ContactDetailView(contact: contact, onDelete: onDelete)) {
+            NavigationLink(destination: ContactDetailView(contact: contact, onDelete: onDelete, onSave: onSave)) {
                 ContactRow(contact: contact)
             }
         }
@@ -58,6 +59,7 @@ struct ContactRow: View {
                 avatar: "person.crop.circle"
             )
         ],
-        onDelete: { _ in }
+        onDelete: { _ in },
+        onSave: { _ in }
     )
 }
