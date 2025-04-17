@@ -18,23 +18,28 @@ struct ContactDetailView: View {
     @StateObject private var viewModel = ContactsViewModel()
     
     var body: some View {
-        List {
+        
+        ScrollView {
             ZStack(alignment: .bottom) {
                 if UIImage(named: contact.avatar) != nil {
                     Image(contact.avatar)
                         .resizable()
                         .scaledToFill()
-                        .frame(height: 300, alignment: .top)
+                        .frame(height: 400, alignment: .top)
+                        .frame(maxWidth: .infinity)
                         .clipped()
-
+                    
                     LinearGradient(
                         gradient: Gradient(colors: [Color.black.opacity(0.6), Color.clear]),
                         startPoint: .bottom,
                         endPoint: .top
                     )
-                    .frame(height: 200)
+                    .frame(height: 400)
+                    .frame(maxWidth: .infinity)
+                    .clipped()
+                    .ignoresSafeArea(edges: .top)
                 }
-
+                
                 VStack(spacing: 18) {
                     if UIImage(named: contact.avatar) == nil {
                         ZStack {
@@ -49,19 +54,19 @@ struct ContactDetailView: View {
                                 .foregroundColor(.blue)
                         }
                     }
-
+                    
                     Text(contact.name.split(separator: " ").first.map(String.init) ?? contact.name)
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .primary)
-
+                    
                     HStack(spacing: 12) {
                         Button(action: {
                             if let url = URL(string: "sms:\(contact.phoneNumber)") {
                                 UIApplication.shared.open(url)
                             }
                         }) {
-                            VStack(spacing: 4) {
+                            VStack(spacing: 10) {
                                 Image(systemName: "message.fill")
                                 Text("Text")
                                     .font(.caption)
@@ -72,13 +77,13 @@ struct ContactDetailView: View {
                             .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .blue)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
-
+                        
                         Button(action: {
                             if let url = URL(string: "tel:\(contact.phoneNumber)") {
                                 UIApplication.shared.open(url)
                             }
                         }) {
-                            VStack(spacing: 4) {
+                            VStack(spacing: 10) {
                                 Image(systemName: "phone.fill")
                                 Text("Call")
                                     .font(.caption)
@@ -89,13 +94,13 @@ struct ContactDetailView: View {
                             .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .blue)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
-
+                        
                         Button(action: {
                             if let url = URL(string: "facetime:\(contact.phoneNumber)") {
                                 UIApplication.shared.open(url)
                             }
                         }) {
-                            VStack(spacing: 4) {
+                            VStack(spacing: 10) {
                                 Image(systemName: "video.fill")
                                 Text("Video")
                                     .font(.caption)
@@ -106,13 +111,13 @@ struct ContactDetailView: View {
                             .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .blue)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
-
+                        
                         Button(action: {
                             if let url = URL(string: "mailto:\(contact.email)") {
                                 UIApplication.shared.open(url)
                             }
                         }) {
-                            VStack(spacing: 4) {
+                            VStack(spacing: 10) {
                                 Image(systemName: "envelope.fill")
                                 Text("Email")
                                     .font(.caption)
@@ -128,57 +133,72 @@ struct ContactDetailView: View {
                 .padding(.horizontal)
                 .padding(.bottom)
             }
-            .listRowInsets(EdgeInsets())
-            .listRowBackground(Color.clear)
             
-            Section("About") {
-                if contact.about.isEmpty {
-                    Text("Tell me about \(contact.name.split(separator: " ").first ?? "")")
-                        .foregroundColor(Color(UIColor.placeholderText))
-                } else {
-                    Text(contact.about)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-            }
-            
-            Section("Contact Info") {
-                LabeledContent {
-                    Text(contact.name)
-                        .foregroundColor(.primary)
-                } label: {
-                    Text("Name")
+            VStack(alignment: .leading, spacing: 32) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("ABOUT")
+                        .font(.callout)
                         .foregroundColor(.secondary)
+                    
+                    if contact.about.isEmpty {
+                        Text("Tell me about \(contact.name.split(separator: " ").first ?? "")")
+                            .foregroundColor(Color(UIColor.placeholderText))
+                            .font(.body)
+                    } else {
+                        Text(contact.about)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
                 
-                LabeledContent {
-                    Text(contact.phoneNumber)
-                        .foregroundColor(.primary)
-                } label: {
-                    Text("Phone")
+                Divider()
+                
+                VStack(alignment: .leading, spacing: 14) {
+                    Text("CONTACT INFO")
+                        .font(.callout)
                         .foregroundColor(.secondary)
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Name")
+                            .font(.subheadline)
+                        Text(contact.name)
+                            .foregroundColor(.blue)
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Phone")
+                            .font(.subheadline)
+                        Text(contact.phoneNumber)
+                            .foregroundColor(.blue)
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Email")
+                            .font(.subheadline)
+                        Text(contact.email)
+                            .foregroundColor(.blue)
+                    }
                 }
                 
-                LabeledContent {
-                    Text(contact.email)
-                        .foregroundColor(.primary)
-                } label: {
-                    Text("Email")
+                Divider()
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("NOTES")
+                        .font(.callout)
                         .foregroundColor(.secondary)
+                    
+                    if contact.notes.isEmpty {
+                        Text("Add some notes about \(contact.name.split(separator: " ").first ?? "")")
+                            .foregroundColor(Color(UIColor.placeholderText))
+                    } else {
+                        Text(contact.notes)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
             }
-            
-            Section("Notes") {
-                if contact.notes.isEmpty {
-                    Text("Add some notes about \(contact.name.split(separator: " ").first ?? "")")
-                        .foregroundColor(Color(UIColor.placeholderText))
-                } else {
-                    Text(contact.notes)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-            }
+            .padding(.horizontal)
+            .padding(.top)
         }
+        .ignoresSafeArea(edges: .top)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing){
@@ -210,9 +230,9 @@ struct ContactDetailView: View {
     ContactDetailView(
         contact: Contact(
             id: UUID(),
-            name: "Jane Doe",
+            name: "Hogan Wilder",
             phoneNumber: "123-456-7890",
-            email: "jane@example.com",
+            email: "hogiebear@example.com",
             avatar: "sample_photo",
             notes: "",
             about: ""
