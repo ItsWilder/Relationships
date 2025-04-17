@@ -44,7 +44,7 @@ struct ContactDetailView: View {
                     VStack (spacing:8){
                         Image(systemName: "phone.fill")
                         Text("Call")
-                            .font(.footnote)
+                            .font(.caption)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -61,7 +61,7 @@ struct ContactDetailView: View {
                     VStack (spacing:8){
                         Image(systemName: "envelope.fill")
                         Text("Email")
-                            .font(.footnote)
+                            .font(.caption)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -77,8 +77,25 @@ struct ContactDetailView: View {
                 }) {
                     VStack (spacing:8){
                         Image(systemName: "message.fill")
-                        Text("Message")
-                            .font(.footnote)
+                        Text("Text")
+                            .font(.caption)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue.opacity(0.1))
+                    .foregroundColor(.blue)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+                
+                Button(action: {
+                    if let url = URL(string: "facetime:\(contact.phoneNumber)") {
+                        UIApplication.shared.open(url)
+                    }
+                }) {
+                    VStack(spacing: 8) {
+                        Image(systemName: "video.fill")
+                        Text("Video")
+                            .font(.caption)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -88,7 +105,6 @@ struct ContactDetailView: View {
                 }
             }
             .listRowBackground(Color.clear)
-            .padding(.horizontal)
             
             Section("About") {
                 if contact.about.isEmpty {
