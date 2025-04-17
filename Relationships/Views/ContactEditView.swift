@@ -43,7 +43,7 @@ struct ContactEditView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         TextField("Phone Number", text: $viewModel.phoneNumber)
                             .keyboardType(.phonePad)
-                            .onChange(of: viewModel.phoneNumber) { newValue in
+                           .onChange(of: viewModel.phoneNumber) {
                                 viewModel.validatePhoneNumber()
                             }
                         
