@@ -19,91 +19,116 @@ struct ContactDetailView: View {
     
     var body: some View {
         List {
-            Section {
-                HStack {
-                    Spacer ()
-                    Image(systemName: contact.avatar)
+            ZStack(alignment: .bottom) {
+                if UIImage(named: contact.avatar) != nil {
+                    Image(contact.avatar)
                         .resizable()
-                        .scaledToFit()
-                        .frame(width: 100, height: 100)
-                        .foregroundColor(.blue)
-                        .padding(20)
-                        .background(Color.blue.opacity(0.1))
-                        .clipShape(Circle())
-                    Spacer ()
+                        .scaledToFill()
+                        .frame(height: 300, alignment: .top)
+                        .clipped()
+
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color.black.opacity(0.6), Color.clear]),
+                        startPoint: .bottom,
+                        endPoint: .top
+                    )
+                    .frame(height: 200)
                 }
-                .listRowBackground(Color.clear)
+
+                VStack(spacing: 18) {
+                    if UIImage(named: contact.avatar) == nil {
+                        ZStack {
+                            Circle()
+                                .fill(Color.blue.opacity(0.1))
+                                .frame(width: 110, height: 110)
+                            
+                            Image(systemName: contact.avatar)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 80, height: 80)
+                                .foregroundColor(.blue)
+                        }
+                    }
+
+                    Text(contact.name.split(separator: " ").first.map(String.init) ?? contact.name)
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .primary)
+
+                    HStack(spacing: 12) {
+                        Button(action: {
+                            if let url = URL(string: "sms:\(contact.phoneNumber)") {
+                                UIApplication.shared.open(url)
+                            }
+                        }) {
+                            VStack(spacing: 4) {
+                                Image(systemName: "message.fill")
+                                Text("Text")
+                                    .font(.caption)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background((UIImage(named: contact.avatar) != nil ? Color.white : Color.blue).opacity(0.15))
+                            .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .blue)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+
+                        Button(action: {
+                            if let url = URL(string: "tel:\(contact.phoneNumber)") {
+                                UIApplication.shared.open(url)
+                            }
+                        }) {
+                            VStack(spacing: 4) {
+                                Image(systemName: "phone.fill")
+                                Text("Call")
+                                    .font(.caption)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background((UIImage(named: contact.avatar) != nil ? Color.white : Color.blue).opacity(0.15))
+                            .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .blue)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+
+                        Button(action: {
+                            if let url = URL(string: "facetime:\(contact.phoneNumber)") {
+                                UIApplication.shared.open(url)
+                            }
+                        }) {
+                            VStack(spacing: 4) {
+                                Image(systemName: "video.fill")
+                                Text("Video")
+                                    .font(.caption)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background((UIImage(named: contact.avatar) != nil ? Color.white : Color.blue).opacity(0.15))
+                            .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .blue)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+
+                        Button(action: {
+                            if let url = URL(string: "mailto:\(contact.email)") {
+                                UIApplication.shared.open(url)
+                            }
+                        }) {
+                            VStack(spacing: 4) {
+                                Image(systemName: "envelope.fill")
+                                Text("Email")
+                                    .font(.caption)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background((UIImage(named: contact.avatar) != nil ? Color.white : Color.blue).opacity(0.15))
+                            .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .blue)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.bottom)
             }
-            
-            HStack(spacing: 12) {
-                Button(action: {
-                    if let url = URL(string: "tel:\(contact.phoneNumber)") {
-                        UIApplication.shared.open(url)
-                    }
-                }) {
-                    VStack (spacing:8){
-                        Image(systemName: "phone.fill")
-                        Text("Call")
-                            .font(.caption)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue.opacity(0.1))
-                    .foregroundColor(.blue)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                }
-                
-                Button(action: {
-                    if let url = URL(string: "mailto:\(contact.email)") {
-                        UIApplication.shared.open(url)
-                    }
-                }) {
-                    VStack (spacing:8){
-                        Image(systemName: "envelope.fill")
-                        Text("Email")
-                            .font(.caption)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue.opacity(0.1))
-                    .foregroundColor(.blue)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                }
-                
-                Button(action: {
-                    if let url = URL(string: "sms:\(contact.phoneNumber)") {
-                        UIApplication.shared.open(url)
-                    }
-                }) {
-                    VStack (spacing:8){
-                        Image(systemName: "message.fill")
-                        Text("Text")
-                            .font(.caption)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue.opacity(0.1))
-                    .foregroundColor(.blue)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                }
-                
-                Button(action: {
-                    if let url = URL(string: "facetime:\(contact.phoneNumber)") {
-                        UIApplication.shared.open(url)
-                    }
-                }) {
-                    VStack(spacing: 8) {
-                        Image(systemName: "video.fill")
-                        Text("Video")
-                            .font(.caption)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue.opacity(0.1))
-                    .foregroundColor(.blue)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                }
-            }
+            .listRowInsets(EdgeInsets())
             .listRowBackground(Color.clear)
             
             Section("About") {
@@ -188,7 +213,7 @@ struct ContactDetailView: View {
             name: "Jane Doe",
             phoneNumber: "123-456-7890",
             email: "jane@example.com",
-            avatar: "person.crop.circle",
+            avatar: "sample_photo",
             notes: "",
             about: ""
         ),

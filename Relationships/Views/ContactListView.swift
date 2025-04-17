@@ -26,22 +26,31 @@ struct ContactRow: View {
     let contact: Contact
     
     var body: some View {
-        HStack (spacing: 15){
-            Image(systemName: contact.avatar)
-                .resizable ()
-                .scaledToFit()
-                .frame(width: 40, height: 40)
-                .foregroundColor(.blue)
-                .padding(8)
-                .background(Color.blue.opacity(0.1))
-                .clipShape(Circle())
-                
-            VStack (alignment: .leading, spacing: 4){
+        HStack(spacing: 15) {
+            if UIImage(named: contact.avatar) != nil {
+                Image(contact.avatar)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 40, height: 40, alignment: .top)
+                    .clipShape(Circle())
+            } else {
+                Image(systemName: contact.avatar)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 40, height: 40)
+                    .foregroundColor(.blue)
+                    .padding(8)
+                    .background(Color.blue.opacity(0.1))
+                    .clipShape(Circle())
+            }
+
+            VStack(alignment: .leading, spacing: 2) {
                 Text(contact.name)
-                    .font(.system(size: 16, weight: .medium))
-            Text(contact.phoneNumber)
-                    .font(.system(size: 14))
-                    .foregroundStyle(.secondary)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                Text(contact.phoneNumber)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
             }
         }
         .padding(.vertical, 4)
@@ -56,7 +65,7 @@ struct ContactRow: View {
                 name: "Jane Doe",
                 phoneNumber: "123-456-7890",
                 email: "jane@example.com",
-                avatar: "person.crop.circle"
+                avatar: "sample_photo"
             )
         ],
         onDelete: { _ in },
