@@ -35,10 +35,41 @@ struct ContactDetailView: View {
                 .listRowBackground(Color.clear)
             }
             
+            Section("About") {
+                if contact.about.isEmpty {
+                   Text("Tell me about \(contact.name.split(separator: " ").first ?? "")")
+                        .foregroundColor(Color(UIColor.placeholderText))
+                } else {
+                    Text(contact.about)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+            
             Section("Contact Info") {
-                LabeledContent("Name", value: contact.name)
-                LabeledContent("Phone", value: contact.phoneNumber)
-                LabeledContent("Email", value: contact.email)
+                LabeledContent {
+                    Text(contact.name)
+                        .foregroundColor(.primary)
+                } label: {
+                    Text("Name")
+                        .foregroundColor(.secondary)
+                }
+
+                LabeledContent {
+                    Text(contact.phoneNumber)
+                        .foregroundColor(.primary)
+                } label: {
+                    Text("Phone")
+                        .foregroundColor(.secondary)
+                }
+
+                LabeledContent {
+                    Text(contact.email)
+                        .foregroundColor(.primary)
+                } label: {
+                    Text("Email")
+                        .foregroundColor(.secondary)
+                }
             }
             
             Section {
@@ -69,8 +100,8 @@ struct ContactDetailView: View {
             
             Section("Notes") {
                 if contact.notes.isEmpty {
-                    Text("Add notes here")
-                        .foregroundColor(.secondary)
+                    Text("Add some notes about \(contact.name.split(separator: " ").first ?? "")")
+                        .foregroundColor(Color(UIColor.placeholderText))
                 } else {
                     Text(contact.notes)
                         .fixedSize(horizontal: false, vertical: true)
@@ -113,7 +144,8 @@ struct ContactDetailView: View {
             phoneNumber: "123-456-7890",
             email: "jane@example.com",
             avatar: "person.crop.circle",
-            notes: ""
+            notes: "",
+            about: ""
         ),
         onDelete: { _ in },
         onSave: { _ in }

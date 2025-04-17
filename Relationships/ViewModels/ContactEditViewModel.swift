@@ -13,6 +13,7 @@ class ContactEditViewModel: ObservableObject {
     @Published var phoneNumber = ""
     @Published var email = ""
     @Published var notes: String = ""
+    @Published var about: String = ""
     @Published var showingPhoneError = false
     
     init(contact: Contact? = nil) {
@@ -21,6 +22,7 @@ class ContactEditViewModel: ObservableObject {
             self.phoneNumber = contact.phoneNumber
             self.email = contact.email
             self.notes = contact.notes
+            self.about = contact.about
         }
     }
     
@@ -43,7 +45,8 @@ class ContactEditViewModel: ObservableObject {
             name: name,
             phoneNumber: formatPhoneNumber(phoneNumber),
             email: email,
-            notes: notes
+            notes: notes,
+            about: about
         )
     }
     
@@ -59,5 +62,3 @@ class ContactEditViewModel: ObservableObject {
         return number
     }
 }
-
-

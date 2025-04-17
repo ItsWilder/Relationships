@@ -37,7 +37,21 @@ struct ContactEditView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section {
+                Section("About") {
+                    ZStack(alignment: .topLeading) {
+                        if viewModel.about.isEmpty {
+                            Text("Add some info about this person")
+                                .foregroundColor(Color(UIColor.placeholderText))
+                                .padding(.top, 8)
+                                .padding(.horizontal, 5)
+                        }
+                        TextEditor(text: $viewModel.about)
+                            .frame(minHeight: 100)
+                            .foregroundColor(.primary)
+                    }
+                }
+                
+                Section("Contact Info") {
                     TextField("Name", text: $viewModel.name)
                     
                     VStack(alignment: .leading, spacing: 4) {
@@ -60,9 +74,17 @@ struct ContactEditView: View {
                 }
                 
                 Section("Notes") {
-                    TextEditor(text: $viewModel.notes)
-                        .frame(minHeight: 100)
-                        .foregroundColor(.primary)
+                    ZStack(alignment: .topLeading) {
+                        if viewModel.notes.isEmpty {
+                            Text("Add some notes about this person")
+                                .foregroundColor(Color(UIColor.placeholderText))
+                                .padding(.top, 8)
+                                .padding(.horizontal, 5)
+                        }
+                        TextEditor(text: $viewModel.notes)
+                            .frame(minHeight: 100)
+                            .foregroundColor(.primary)
+                    }
                 }
             }
             .navigationTitle(mode.isNew ? "New Contact" : "Edit Contact")
@@ -102,7 +124,7 @@ private extension ContactEditMode {
     ContactEditView(
         mode: .edit(Contact(
             id: UUID(),
-            name: "Jane",
+            name: "Jane Wilder",
             phoneNumber: "123-456-7890",
             email: "jane@example.com",
             notes: "Notes will go here and can wrap if you have multiple lines of text you want to add."
