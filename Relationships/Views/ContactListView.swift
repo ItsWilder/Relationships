@@ -35,21 +35,24 @@ struct ContactRow: View {
     
     var body: some View {
         HStack(spacing: 15) {
-            if let image = contact.avatarImage {
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 40, height: 40, alignment: .top)
-                    .clipShape(Circle())
-            } else {
-                Image(systemName: contact.avatar)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 40, height: 40)
-                    .foregroundColor(.blue)
-                    .padding(8)
-                    .background(Color.blue.opacity(0.1))
-                    .clipShape(Circle())
+            ZStack {
+                Circle()
+                    .fill(Color.blue.opacity(0.1))
+                    .frame(width: 56, height: 56)
+
+                if let image = contact.avatarImage {
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                } else {
+                    Image(systemName: contact.avatar)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40, height: 40)
+                        .foregroundColor(.blue)
+                }
             }
 
             VStack(alignment: .leading, spacing: 2) {
