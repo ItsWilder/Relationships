@@ -22,12 +22,16 @@ struct ContactDetailView: View {
         ScrollView {
             ZStack(alignment: .bottom) {
                 if UIImage(named: contact.avatar) != nil {
-                    Image(contact.avatar)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(height: 500, alignment: .top)
-                        .frame(maxWidth: .infinity)
-                        .clipped()
+                    GeometryReader { geometry in
+                        let minY = geometry.frame(in: .global).minY
+                        Image(contact.avatar)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: geometry.size.width, height: minY > 0 ? 500 + minY : 500, alignment: .top)
+                            .clipped()
+                            .offset(y: minY > 0 ? -minY : 0)
+                    }
+                    .frame(height: 500)
                     
                     LinearGradient(
                         gradient: Gradient(colors: [Color.black.opacity(0.6), Color.clear]),
@@ -42,9 +46,9 @@ struct ContactDetailView: View {
                 
                 if UIImage(named: contact.avatar) != nil {
                     ZStack {
-                        VisualEffectBlur(blurStyle: .systemUltraThinMaterialDark)
+                        VisualEffectBlur(blurStyle: .systemMaterialDark)
                             .frame(maxWidth: .infinity)
-                            .frame(height: 200)
+                            .frame(height: 300)
                             .mask(
                                 LinearGradient(
                                     gradient: Gradient(colors: [Color.black.opacity(0.6), Color.clear]),
