@@ -21,10 +21,10 @@ struct ContactDetailView: View {
         
         ScrollView {
             ZStack(alignment: .bottom) {
-                if UIImage(named: contact.avatar) != nil {
+                if let image = contact.avatarImage {
                     GeometryReader { geometry in
                         let minY = geometry.frame(in: .global).minY
-                        Image(contact.avatar)
+                        image
                             .resizable()
                             .scaledToFill()
                             .frame(width: geometry.size.width, height: minY > 0 ? 500 + minY : 500, alignment: .top)
@@ -44,7 +44,7 @@ struct ContactDetailView: View {
                     .ignoresSafeArea(edges: .top)
                 }
                 
-                if UIImage(named: contact.avatar) != nil {
+                if contact.avatarImage != nil {
                     ZStack {
                         VisualEffectBlur(blurStyle: .systemMaterialDark)
                             .frame(maxWidth: .infinity)
@@ -60,7 +60,7 @@ struct ContactDetailView: View {
                 }
                 
                 VStack(spacing: 18) {
-                    if UIImage(named: contact.avatar) == nil {
+                    if contact.avatarImage == nil {
                         ZStack {
                             Circle()
                                 .fill(Color.blue.opacity(0.1))
@@ -80,7 +80,7 @@ struct ContactDetailView: View {
                     Text(contact.name.split(separator: " ").first.map(String.init) ?? contact.name)
                         .font(.largeTitle)
                         .fontWeight(.semibold)
-                        .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .primary)
+                        .foregroundColor(contact.avatarImage != nil ? .white : .primary)
                         .padding(.bottom, 0)
                     
                     HStack(spacing: 12) {
@@ -96,8 +96,8 @@ struct ContactDetailView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background((UIImage(named: contact.avatar) != nil ? Color.white : Color.blue).opacity(0.15))
-                            .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .blue)
+                            .background((contact.avatarImage != nil ? Color.white : Color.blue).opacity(0.15))
+                            .foregroundColor(contact.avatarImage != nil ? .white : .blue)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                         
@@ -113,8 +113,8 @@ struct ContactDetailView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background((UIImage(named: contact.avatar) != nil ? Color.white : Color.blue).opacity(0.15))
-                            .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .blue)
+                            .background((contact.avatarImage != nil ? Color.white : Color.blue).opacity(0.15))
+                            .foregroundColor(contact.avatarImage != nil ? .white : .blue)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                         
@@ -130,8 +130,8 @@ struct ContactDetailView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background((UIImage(named: contact.avatar) != nil ? Color.white : Color.blue).opacity(0.15))
-                            .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .blue)
+                            .background((contact.avatarImage != nil ? Color.white : Color.blue).opacity(0.15))
+                            .foregroundColor(contact.avatarImage != nil ? .white : .blue)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                         
@@ -147,15 +147,15 @@ struct ContactDetailView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background((UIImage(named: contact.avatar) != nil ? Color.white : Color.blue).opacity(0.15))
-                            .foregroundColor(UIImage(named: contact.avatar) != nil ? .white : .blue)
+                            .background((contact.avatarImage != nil ? Color.white : Color.blue).opacity(0.15))
+                            .foregroundColor(contact.avatarImage != nil ? .white : .blue)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                     }
                     .padding(.bottom, 0)
                     
                     VStack(alignment: .leading, spacing: 8) {
-                        let isPhoto = UIImage(named: contact.avatar) != nil
+                        let isPhoto = contact.avatarImage != nil
                         let textColor: Color = isPhoto ? .white : .primary
 
                         Text("ABOUT")

@@ -25,4 +25,12 @@ struct Contact: Identifiable, Codable {
         self.notes = notes
         self.about = about
     }
+    
+    var avatarImage: Image? {
+        if let data = Data(base64Encoded: avatar),
+           let uiImage = UIImage(data: data) {
+            return Image(uiImage: uiImage)
+        }
+        return nil
+    }
 }

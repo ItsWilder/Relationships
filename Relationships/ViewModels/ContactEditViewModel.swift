@@ -14,6 +14,7 @@ class ContactEditViewModel: ObservableObject {
     @Published var email = ""
     @Published var notes: String = ""
     @Published var about: String = ""
+    @Published var avatar: String = "person.crop.circle.fill"
     @Published var showingPhoneError = false
     
     init(contact: Contact? = nil) {
@@ -45,6 +46,7 @@ class ContactEditViewModel: ObservableObject {
             name: name,
             phoneNumber: formatPhoneNumber(phoneNumber),
             email: email,
+            avatar: avatar,
             notes: notes,
             about: about
         )

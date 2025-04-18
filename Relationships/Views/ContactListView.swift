@@ -14,9 +14,17 @@ struct ContactListView: View {
     let onSave: (Contact) -> Void
     
     var body: some View {
-        List(contacts) { contact in
-            NavigationLink(destination: ContactDetailView(contact: contact, onDelete: onDelete, onSave: onSave)) {
-                ContactRow(contact: contact)
+        List {
+            ForEach(contacts) { contact in
+                NavigationLink(destination: ContactDetailView(contact: contact, onDelete: onDelete, onSave: onSave)) {
+                    ContactRow(contact: contact)
+                }
+            }
+            .onDelete { indexSet in
+                indexSet.forEach { index in
+                    let contactToDelete = contacts[index]
+                    onDelete(contactToDelete)
+                }
             }
         }
     }
@@ -27,8 +35,8 @@ struct ContactRow: View {
     
     var body: some View {
         HStack(spacing: 15) {
-            if UIImage(named: contact.avatar) != nil {
-                Image(contact.avatar)
+            if let image = contact.avatarImage {
+                image
                     .resizable()
                     .scaledToFill()
                     .frame(width: 40, height: 40, alignment: .top)

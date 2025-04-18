@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 enum ContactEditMode {
     case new
@@ -19,6 +20,9 @@ struct ContactEditView: View {
     let onSave: (Contact) -> Void
     
     @StateObject private var viewModel: ContactEditViewModel
+    @State private var selectedImageData: Data?
+    @State private var selectedImageItem: PhotosPickerItem?
+    @State private var showPhotoPicker = false
     
     init(mode: ContactEditMode, onSave: @escaping (Contact) -> Void) {
         self.mode = mode
@@ -36,6 +40,38 @@ struct ContactEditView: View {
     }
     var body: some View {
         NavigationStack {
+            VStack(spacing: 8) {
+                if let imageData = selectedImageData, let uiImage = UIImage(data: imageData) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 100, height: 100)
+                        .clipShape(Circle())
+                } else {
+                    ZStack {
+                        Circle()
+                            .fill(Color.blue.opacity(0.1))
+                            .frame(width: 100, height: 100)
+                        Image(systemName: "person.crop.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 60, height: 60)
+                            .foregroundColor(.blue)
+                    }
+                }
+
+                Button("Add Photo") {
+                    showPhotoPicker = true
+                }
+                .font(.subheadline)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 6)
+                .background(Color(.systemGray5))
+                .clipShape(Capsule())
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical)
+            
             Form {
                 Section("About") {
                     ZStack(alignment: .topLeading) {
@@ -107,6 +143,19 @@ struct ContactEditView: View {
                         dismiss()
                     }
                     .disabled(!viewModel.isFormValid)
+                }
+            }
+        }
+        .photosPicker(
+            isPresented: $showPhotoPicker,
+            selection: $selectedImageItem,
+            matching: .images
+        )
+        .onChange(of: selectedImageItem) { newItem in
+            Task {
+                if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                    selectedImageData = data
+                    viewModel.avatar = data.base64EncodedString()
                 }
             }
         }
