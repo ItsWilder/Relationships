@@ -28,7 +28,7 @@ class ContactEditViewModel: ObservableObject {
     }
     
     var isFormValid: Bool {
-        !name.isEmpty && !phoneNumber.isEmpty && isValidPhone
+        !name.isEmpty
     }
     
     private var isValidPhone: Bool {
