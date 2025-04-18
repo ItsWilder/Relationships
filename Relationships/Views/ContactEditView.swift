@@ -73,20 +73,6 @@ struct ContactEditView: View {
             .padding(.vertical)
             
             Form {
-                Section("About") {
-                    ZStack(alignment: .topLeading) {
-                        if viewModel.about.isEmpty {
-                            Text("Add some info about this person")
-                                .foregroundColor(Color(UIColor.placeholderText))
-                                .padding(.top, 8)
-                                .padding(.horizontal, 5)
-                        }
-                        TextEditor(text: $viewModel.about)
-                            .frame(minHeight: 100)
-                            .foregroundColor(.primary)
-                    }
-                }
-                
                 Section("Contact Info") {
                     TextField("Name", text: $viewModel.name)
                     
@@ -107,6 +93,20 @@ struct ContactEditView: View {
                     TextField("Email", text: $viewModel.email)
                         .keyboardType(.emailAddress)
                         .textInputAutocapitalization(.never)
+                }
+                
+                Section("About") {
+                    ZStack(alignment: .topLeading) {
+                        if viewModel.about.isEmpty {
+                            Text("Add some info about this person")
+                                .foregroundColor(Color(UIColor.placeholderText))
+                                .padding(.top, 8)
+                                .padding(.horizontal, 5)
+                        }
+                        TextEditor(text: $viewModel.about)
+                            .frame(minHeight: 100)
+                            .foregroundColor(.primary)
+                    }
                 }
                 
                 Section("Notes") {
